@@ -2,5 +2,5 @@
 
 
 def test_placeholder() -> None:
-	"""Is pytest setup and ntegrated with CI?."""
+	"""Is pytest setup and integrated with CI?."""
 	assert True
