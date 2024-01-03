@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "quecital"
+version = "0.1.1"
+description = ""
+authors = ["Robert Portelli <github@robertportelli.com>"]
+readme = "README.md"
+packages = [{include = "quecital", from = "src"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
