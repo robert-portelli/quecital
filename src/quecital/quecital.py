@@ -4,6 +4,7 @@ from pathlib import Path
 import click
 # import tomllib
 from quecital import quiz
+from quecital import add_quiz_question
 from tomli_w import dump
 
 @click.group()
@@ -52,6 +53,7 @@ def start():
             case 2:
                 # Logic to add a question
                 click.echo("Adding a question...")
+                add_quiz_question.main()
             case 3:
                 click.echo("Exiting Quecital. Goodbye!")
             case _:
