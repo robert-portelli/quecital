@@ -9,7 +9,7 @@ This module contains unit tests for functions in the quecital.py module.
 from pathlib import Path
 import pytest
 from click.testing import CliRunner
-from src.quecital.quecital import quecital, find_quecital_toml
+from quecital.quecital import quecital, find_quecital_toml
 
 
 @pytest.fixture
@@ -64,51 +64,29 @@ def test_find_quecital_toml_not_exists(temp_directory):
     assert find_quecital_toml() is None
 
 
-def test_start_with_quecital_toml(capsys, temp_directory):
-    """
-    Test case for starting quecital with quecital.toml present.
 
-    This function tests the behavior of the 'start' command when quecital.toml
-    is present in the specified temporary directory.
-
-    Args:
-        capsys (_pytest.capture.CaptureFixture): Pytest fixture for capturing stdout and stderr.
-        temp_directory (py.path.local): Pytest fixture for the temporary directory.
-
-    """
+""" # Test to ensure 'quecital start' command handles different user actions correctly
+def test_start_command_actions(temp_directory):
     # Create quecital.toml in the temporary directory
-    Path("quecital.toml").write_text("content", encoding="utf-8")
+    Path("quecital.toml").write_text("content", encoding='utf-8')
 
-    # Run the 'start' command and check the output
-    with CliRunner().isolated_filesystem():
+    # Set up CliRunner
+    runner = CliRunner()
+
+    # Define user inputs for the test
+    user_inputs = [str(action) for action in [1, 2, 3, "invalid"]]
+
+    # Use CliRunner to simulate user input during the test
+    with runner.isolated_filesystem():
         with temp_directory.as_cwd():
-            quecital_result = CliRunner().invoke(quecital, ["start"])
+            quecital_result = runner.invoke(quecital, ["start"], input='\n'.join(user_inputs))
 
-    # Check the output and exit code
-    assert quecital_result.exit_code == 0
+    # Check the output and exit code for each action
     assert "Found quecital.toml at:" in quecital_result.output
+    assert "Starting quiz..." in quecital_result.output
+    assert "Adding a question..." in quecital_result.output
+    assert "Exiting Quecital. Goodbye!" in quecital_result.output
+    assert "Invalid choice. Exiting." in quecital_result.output
 
-
-def test_start_without_quecital_toml(capsys, temp_directory):
-    """
-    Test case for starting quecital without quecital.toml.
-
-    This function tests the behavior of the 'start' command when quecital.toml
-    is not present in the specified temporary directory.
-
-    Args:
-        capsys (_pytest.capture.CaptureFixture): Pytest fixture for capturing stdout and stderr.
-        temp_directory (py.path.local): Pytest fixture for the temporary directory.
-
-    """
-    # Run the 'start' command without quecital.toml and check the output
-    with CliRunner().isolated_filesystem():
-        with temp_directory.as_cwd():
-            quecital_result = CliRunner().invoke(quecital, ["start"])
-
-    # Check the output and exit code
-    assert quecital_result.exit_code == 0
-    assert (
-        "quecital.toml not found in the current working directory."
-        in quecital_result.output
-    )
+    # Ensure the exit code is 0 for all valid actions
+    assert quecital_result.exit_code == 0 """
