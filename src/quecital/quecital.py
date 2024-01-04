@@ -3,7 +3,8 @@
 from pathlib import Path
 import click
 # import tomllib
-
+from quecital import quiz
+from tomli_w import dump
 
 @click.group()
 def quecital():
@@ -18,11 +19,14 @@ def find_quecital_toml():
 
 def create_quecital_file():
     file_name = 'quecital.toml'
+    topic = input("Enter topic name: ").lower()
+    label = topic.capitalize()
+    new_topic = {topic: {'label': label}}
     # Open the file in write mode, creating it if it doesn't exist
-    open(file_name, 'w', encoding='utf-8').close()
-    # The file is open and immediately closed, creating an empty file
+    with open(file_name, 'wb') as f:
+        dump(new_topic, f)
 
-    click.echo(f"Empty file '{file_name}' created.")
+    click.echo(f"A new quecital.toml was created with an inital topic of {topic}.")
 
 
 @quecital.command()
@@ -44,6 +48,7 @@ def start():
             case 1:
                 # Logic to start quiz
                 click.echo("Starting quiz...")
+                quiz.main()
             case 2:
                 # Logic to add a question
                 click.echo("Adding a question...")
