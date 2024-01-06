@@ -2,9 +2,8 @@
 
 from pathlib import Path
 import click
-# import tomllib
-from quecital import quiz
-from quecital import add_quiz_question
+import tomllib
+from quecital import quiz, add_quiz_question, add_recital
 from tomli_w import dump
 
 @click.group()
@@ -18,16 +17,34 @@ def find_quecital_toml():
     quecital_path = Path("quecital.toml")
     return quecital_path if quecital_path.is_file() else None
 
-def create_quecital_file():
-    file_name = 'quecital.toml'
+def new_topic():
     topic = input("Enter topic name: ").lower()
     label = topic.capitalize()
-    new_topic = {topic: {'label': label}}
+    return {
+        topic: {
+            'label': label,
+            'questions': [],
+            'recitals': []
+            }
+        }
+
+def add_new_topic(topic):
+    questions_path = Path("quecital.toml")
+    trivia_toml = tomllib.loads(questions_path.read_text())
+    trivia_toml.update(topic)
+    with open(questions_path, "wb") as f:
+        dump(trivia_toml, f)
+
+
+
+
+def create_quecital_file():
+    file_name = 'quecital.toml'
     # Open the file in write mode, creating it if it doesn't exist
     with open(file_name, 'wb') as f:
-        dump(new_topic, f)
+        dump(new_topic(), f)
 
-    click.echo(f"A new quecital.toml was created with an inital topic of {topic}.")
+    click.echo(f"A new quecital.toml was created.")
 
 
 @quecital.command()
@@ -43,7 +60,7 @@ def start():
             """)
         # Perform actions based on the existence of quecital.toml
         action = click.prompt(
-            "1. Take a quiz\n2. Add a question\n3. Exit", type=int)
+            "1. Take a quiz\n2. Add a question\n3. Add a recital\n4. Start a recital\n5. Add a topic\n6. Exit", type=int)
 
         match action:
             case 1:
@@ -55,6 +72,17 @@ def start():
                 click.echo("Adding a question...")
                 add_quiz_question.main()
             case 3:
+                # Logic to add a recital
+                click.echo("Adding a recital...")
+                add_recital.main()
+            case 4:
+                # Logic to start a recital
+                pass
+            case 5:
+                # logic to add a topic to quecital.toml
+                click.echo("Adding a topic to quecital.toml")
+                add_new_topic(new_topic())
+            case 6:
                 click.echo("Exiting Quecital. Goodbye!")
             case _:
                 click.echo("Invalid choice. Exiting.")
