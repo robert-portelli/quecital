@@ -7,7 +7,7 @@ readme = "README.md"
 packages = [{include = "quecital", from = "src"}]
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = "3.11"
 click = "^8.1.7"
 tomli-w = "^1.0.0"
 
