@@ -6,11 +6,11 @@ This module contains unit tests for functions in the quecital.py module.
 
 """
 
-from pathlib import Path
+# from pathlib import Path
 import pytest
 
 # from click.testing import CliRunner
-from quecital.quecital import find_quecital_toml
+# from quecital.quecital import find_quecital_toml
 
 
 @pytest.fixture
@@ -27,8 +27,7 @@ def temp_directory(tmpdir):
     with tmpdir.as_cwd():
         yield tmpdir
 
-
-#def test_find_quecital_toml_exists(temp_directory):
+    # def test_find_quecital_toml_exists(temp_directory):
     """
     Test case for find_quecital_toml when quecital.toml exists.
 
@@ -39,6 +38,8 @@ def temp_directory(tmpdir):
         temp_directory (py.path.local): Pytest fixture for the temporary directory.
 
     """
+
+
 """     # Create quecital.toml in the temporary directory
     Path("quecital.toml").write_text("content", encoding="utf-8")
 
@@ -50,8 +51,8 @@ def temp_directory(tmpdir):
     assert actual_path.resolve() == expected_path.resolve() """
 
 
-#def test_find_quecital_toml_not_exists(temp_directory):
-    """
+# def test_find_quecital_toml_not_exists(temp_directory):
+"""
     Test case for find_quecital_toml when quecital.toml does not exist.
 
     This function checks if find_quecital_toml correctly returns None when
@@ -61,5 +62,5 @@ def temp_directory(tmpdir):
         temp_directory (py.path.local): Pytest fixture for the temporary directory.
 
     """
-    # Check if find_quecital_toml returns None when quecital.toml is not found
-    #assert find_quecital_toml() is None
+# Check if find_quecital_toml returns None when quecital.toml is not found
+# assert find_quecital_toml() is None
