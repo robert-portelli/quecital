@@ -8,7 +8,7 @@ This module contains unit tests for functions in the quecital.py module.
 
 from pathlib import Path
 import pytest
-from click.testing import CliRunner
+#from click.testing import CliRunner
 from quecital.quecital import quecital, find_quecital_toml
 
 
