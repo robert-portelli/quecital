@@ -19,12 +19,12 @@ jobs:
       #----------------------------------------------
       #  -----  install & configure poetry  -----
       #----------------------------------------------
-      - name: Install Poetry
+      - name: Install Poetry #will want to cache as in snok/install-poetry readme in the future
         uses: snok/install-poetry@v1
         with:
+          version: latest
           virtualenvs-create: true
           virtualenvs-in-project: true
-          installer-parallel: true
 
       #----------------------------------------------
       #       load cached venv if cache exists
@@ -62,4 +62,4 @@ jobs:
       #----------------------------------------------
         run: |
           poetry run pytest tests/
-          poetry run coverage report
+      #    poetry run coverage report
