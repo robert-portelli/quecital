@@ -1,16 +1,19 @@
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
 [tool.poetry]
 name = "quecital"
-version = "0.2.0"
+version = "0.2.3"
 description = "Fact quiz and line recital"
 authors = ["Robert Portelli <github@robertportelli.com>"]
 readme = "README.md"
 packages = [{include = "quecital", from = "src"}]
 
 [tool.poetry.dependencies]
-python = "3.11"
+python = ">=3.11"
 click = "^8.1.7"
 tomli-w = "^1.0.0"
-
 
 [tool.poetry.group.dev.dependencies]
 pytest-cov = "^4.1.0"
@@ -20,9 +23,6 @@ pytest = "^7.4.4"
 mkdocs = "^1.5.3"
 mkdocstrings = {extras = ["python"], version = "^0.24.0"}
 
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
 quecital = "quecital.__main__:cli"

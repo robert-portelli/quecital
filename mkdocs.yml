@@ -1,5 +1,5 @@
 # mkdocs.yml
-site_name: Calculation Docs
+site_name: Quecital Docs
 
 theme:
   name: "material"
@@ -8,7 +8,7 @@ plugins:
   - mkdocstrings
 
 nav:
-  - Calculation Docs: index.md
+  - Quecital Docs: index.md
   - tutorials.md
   - How-To Guides: how-to-guides.md
   - reference.md
