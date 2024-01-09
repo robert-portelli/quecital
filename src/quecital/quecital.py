@@ -6,6 +6,7 @@ import tomllib
 from quecital import quiz, add_quiz_question, add_recital
 from tomli_w import dump
 
+
 @click.group()
 def quecital():
     """Quecital - Your Quiz App."""
@@ -17,16 +18,12 @@ def find_quecital_toml():
     quecital_path = Path("quecital.toml")
     return quecital_path if quecital_path.is_file() else None
 
+
 def new_topic():
     topic = input("Enter topic name: ").lower()
     label = topic.capitalize()
-    return {
-        topic: {
-            'label': label,
-            'questions': [],
-            'recitals': []
-            }
-        }
+    return {topic: {"label": label, "questions": [], "recitals": []}}
+
 
 def add_new_topic(topic):
     questions_path = Path("quecital.toml")
@@ -36,12 +33,10 @@ def add_new_topic(topic):
         dump(trivia_toml, f)
 
 
-
-
 def create_quecital_file():
-    file_name = 'quecital.toml'
+    file_name = "quecital.toml"
     # Open the file in write mode, creating it if it doesn't exist
-    with open(file_name, 'wb') as f:
+    with open(file_name, "wb") as f:
         dump(new_topic(), f)
 
     click.echo(f"A new quecital.toml was created.")
@@ -53,14 +48,18 @@ def start():
     quecital_toml_path = find_quecital_toml()
 
     if quecital_toml_path:
-        click.echo(f"""
+        click.echo(
+            f"""
                     Welcome to Quecital!
                     Found quecital.toml at: {quecital_toml_path}
                     What would you like to do?
-            """)
+            """
+        )
         # Perform actions based on the existence of quecital.toml
         action = click.prompt(
-            "1. Take a quiz\n2. Add a question\n3. Add a recital\n4. Start a recital\n5. Add a topic\n6. Exit", type=int)
+            "1. Take a quiz\n2. Add a question\n3. Add a recital\n4. Start a recital\n5. Add a topic\n6. Exit",
+            type=int,
+        )
 
         match action:
             case 1:
@@ -90,7 +89,9 @@ def start():
     else:
         click.echo("quecital.toml not found in the current working directory.")
         # Perform actions when quecital.toml is not found
-        create_file = click.confirm("Do you want to create a new quiz file?", default=True)
+        create_file = click.confirm(
+            "Do you want to create a new quiz file?", default=True
+        )
 
         if create_file:
             create_quecital_file()

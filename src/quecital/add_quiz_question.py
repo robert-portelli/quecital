@@ -27,12 +27,11 @@ from tomli_w import dump
 from quecital.quiz import main_loop
 
 
-
-
 def preprocess():
     questions_path = pathlib.Path("quecital.toml")
     trivia_toml = tomllib.loads(questions_path.read_text())
     return questions_path, trivia_toml
+
 
 def main():
     """

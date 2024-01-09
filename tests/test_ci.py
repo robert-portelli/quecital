@@ -1,6 +1,7 @@
+# test_ci.py
 """A test that always passes."""
 
 
 def test_placeholder() -> None:
-	"""Is pytest setup and integrated with CI?."""
-	assert True
+    """Is pytest setup and integrated with CI?."""
+    assert True
