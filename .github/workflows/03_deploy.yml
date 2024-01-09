@@ -25,6 +25,12 @@ jobs:
       #----------------------------------------------
       #  -----  install & configure poetry  -----
       #----------------------------------------------
+      - name: Load cached Poetry installation
+        id: cached-poetry
+        uses: actions/cache@v3
+        with:
+          path: ~/.local
+          key: poetry-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
       - name: Install Poetry #will want to cache as in snok/install-poetry readme in the future
         uses: snok/install-poetry@v1
         with:
