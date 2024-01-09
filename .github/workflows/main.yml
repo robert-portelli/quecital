@@ -62,4 +62,6 @@ jobs:
       #----------------------------------------------
         run: |
           poetry run pytest --cov=tests/
+          poetry run pytest --cov=src/
+          poetry run pytest --cov-report term-missing:skip-covered --cov
       #    poetry run coverage report

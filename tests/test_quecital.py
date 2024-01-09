@@ -10,7 +10,7 @@ This module contains unit tests for functions in the quecital.py module.
 import pytest
 
 # from click.testing import CliRunner
-# from quecital.quecital import find_quecital_toml
+from quecital.quecital import quecital
 
 
 @pytest.fixture
