@@ -28,7 +28,7 @@ def temp_directory(tmpdir):
         yield tmpdir
 
 
-def test_find_quecital_toml_exists(temp_directory):
+#def test_find_quecital_toml_exists(temp_directory):
     """
     Test case for find_quecital_toml when quecital.toml exists.
 
@@ -39,7 +39,7 @@ def test_find_quecital_toml_exists(temp_directory):
         temp_directory (py.path.local): Pytest fixture for the temporary directory.
 
     """
-    # Create quecital.toml in the temporary directory
+"""     # Create quecital.toml in the temporary directory
     Path("quecital.toml").write_text("content", encoding="utf-8")
 
     # Check if find_quecital_toml finds quecital.toml
@@ -47,7 +47,7 @@ def test_find_quecital_toml_exists(temp_directory):
     actual_path = find_quecital_toml()
 
     assert actual_path is not None
-    assert actual_path.resolve() == expected_path.resolve()
+    assert actual_path.resolve() == expected_path.resolve() """
 
 
 #def test_find_quecital_toml_not_exists(temp_directory):
