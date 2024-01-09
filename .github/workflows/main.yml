@@ -65,3 +65,9 @@ jobs:
           poetry run pytest --cov=src/
           poetry run pytest --cov-report term-missing:skip-covered --cov
       #    poetry run coverage report
+      #
+      #----------------------------------------------
+      #           build and publish mkdocs
+      #----------------------------------------------
+      - name: Build and publish MkDocs
+        run: poetry run mkdocs gh-deploy

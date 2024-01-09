@@ -24,7 +24,7 @@ jobs:
         pip install mkdocs mkdocs-material "mkdocstrings[python]"
 
     - name: Build MkDocs
-      run: mkdocs build
+      run: poetry run mkdocs build
 
     - name: Publish to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
