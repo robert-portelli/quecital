@@ -57,5 +57,7 @@ jobs:
       #           build and publish mkdocs
       #----------------------------------------------
       - name: Deploy
-        run: |
-          poetry run mkdocs gh-deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
