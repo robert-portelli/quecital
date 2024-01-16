@@ -13,9 +13,14 @@ def quecital():
     pass
 
 
-def find_quecital_toml():
-    """Find quecital.toml in the current working directory."""
-    quecital_path = Path("quecital.toml")
+def find_quecital_toml(quecital_storage):
+    """Read in the pyproject.toml and look up the value for
+    key 'quecital': a string path to the quecital.toml
+    1) does the key exist
+    2) is the value not none
+    3) if you split the string on ., is the second element 'toml'
+    """
+    quecital_path = Path(quecital_storage)
     return quecital_path if quecital_path.is_file() else None
 
 
@@ -33,19 +38,18 @@ def add_new_topic(topic):
         dump(trivia_toml, f)
 
 
-def create_quecital_file():
-    file_name = "quecital.toml"
+def create_quecital_file(file_name):
     # Open the file in write mode, creating it if it doesn't exist
     with open(file_name, "wb") as f:
         dump(new_topic(), f)
 
-    click.echo(f"A new quecital.toml was created.")
+    click.echo("A new quecital.toml was created.")
 
 
 @quecital.command()
 def start():
     # Check for quecital.toml in the cwd
-    quecital_toml_path = find_quecital_toml()
+    quecital_toml_path = find_quecital_toml("quecital.toml")
 
     if quecital_toml_path:
         click.echo(
@@ -94,4 +98,4 @@ def start():
         )
 
         if create_file:
-            create_quecital_file()
+            create_quecital_file("quecital.toml")
