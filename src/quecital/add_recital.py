@@ -6,12 +6,6 @@ from quecital.quiz import main_loop
 
 
 def main(quecital_toml_path, quecital_data):
-    """
-
-
-    Steps:
-        1.
-    """
     questions_list = path_to_list_of_dicts(quecital_data)
     new_question_dict = create_recital()
     questions_list.append(new_question_dict)
@@ -19,7 +13,7 @@ def main(quecital_toml_path, quecital_data):
         dump(quecital_data, f)
 
 
-def path_to_list_of_dicts(trivia_toml):
+def path_to_list_of_dicts(quecital_data):
     """
     Return the list of dictionaries representing questions for the
         selected topic.
@@ -30,9 +24,11 @@ def path_to_list_of_dicts(trivia_toml):
     """
     topic_label = main_loop(
         question="Which topic do you want to add a recital to",
-        alternatives=trivia_toml.keys(),
+        alternatives=quecital_data.keys(),
     )[0]
-    return trivia_toml[topic_label]["recitals"]
+    return quecital_data[topic_label]["recitals"]
+
+#  TODO handle the key error if ["recitals"] not in quecital_data[topic_label]
 
 
 def create_recital():

@@ -1,22 +1,16 @@
 # quiz.py
 from string import ascii_lowercase
 import random
-import pathlib
-import tomllib
+
 
 NUM_QUESTIONS_PER_QUIZ = 5
-# QUESTIONS_PATH = pathlib.Path("quecital.toml")
-# QUESTIONS_PATH = pathlib.Path(__file__).parent / "quecital.toml"
 
 
 def main(quecital_data):
     """
     Main function to run the quiz game.
     """
-    questions = preprocess(
-        quecital_data,
-        num_questions=NUM_QUESTIONS_PER_QUIZ
-        )
+    questions = preprocess(quecital_data, num_questions=NUM_QUESTIONS_PER_QUIZ)
 
     num_correct = 0
     for index_label, question in enumerate(questions, start=1):
@@ -37,10 +31,7 @@ def preprocess(data, num_questions):
     Returns:
     List[dict]: A list of selected questions.
     """
-    #trivia_toml = tomllib.loads(path.read_text())
-    topics = {
-        topic["label"]: topic["questions"] for topic in data.values()
-    }
+    topics = {topic["label"]: topic["questions"] for topic in data.values()}
     topic_label = main_loop(
         question="Which topic do you want to be quizzed about",
         alternatives=sorted(topics),
@@ -130,11 +121,7 @@ def main_loop(question, alternatives, num_choices=1, hint=None):
             continue
 
         # Handle incorrect character(s) given as answer
-        if any(
-            (invalid := answer)
-            not in labeled_alternatives
-            for answer in answers
-        ):
+        if any((invalid := answer) not in labeled_alternatives for answer in answers):
             print(
                 f"{invalid!r} is not a valid choice. "
                 f"Please use {', '.join(labeled_alternatives)}"
@@ -142,7 +129,3 @@ def main_loop(question, alternatives, num_choices=1, hint=None):
             continue
 
         return [labeled_alternatives[answer] for answer in answers]
-
-
-if __name__ == "__main__":
-    main()
