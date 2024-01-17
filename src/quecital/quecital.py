@@ -1,10 +1,10 @@
 # quecital.py
 
 from pathlib import Path
-import click
 import tomllib
-from quecital import quiz, add_quiz_question, add_recital
+import click
 from tomli_w import dump
+from quecital import quiz, add_quiz_question, add_recital
 
 
 @click.group()
@@ -13,9 +13,8 @@ def quecital():
     pass
 
 
-def find_quecital_toml():
-    """Find quecital.toml in the current working directory."""
-    quecital_path = Path("quecital.toml")
+def find_quecital_toml(quecital_storage):
+    quecital_path = Path(quecital_storage)
     return quecital_path if quecital_path.is_file() else None
 
 
@@ -25,29 +24,28 @@ def new_topic():
     return {topic: {"label": label, "questions": [], "recitals": []}}
 
 
-def add_new_topic(topic):
-    questions_path = Path("quecital.toml")
-    trivia_toml = tomllib.loads(questions_path.read_text())
-    trivia_toml.update(topic)
-    with open(questions_path, "wb") as f:
-        dump(trivia_toml, f)
+def add_new_topic(topic, quecital_toml_path):
+    quecital_toml = tomllib.loads(quecital_toml_path.read_text(encoding="utf-8"))
+    quecital_toml.update(topic)
+    with open(quecital_toml_path, "wb") as f:
+        dump(quecital_toml, f)
 
 
-def create_quecital_file():
-    file_name = "quecital.toml"
+def create_quecital_file(file_name):
     # Open the file in write mode, creating it if it doesn't exist
     with open(file_name, "wb") as f:
         dump(new_topic(), f)
 
-    click.echo(f"A new quecital.toml was created.")
+    click.echo("A new quecital.toml was created.")
 
 
 @quecital.command()
 def start():
     # Check for quecital.toml in the cwd
-    quecital_toml_path = find_quecital_toml()
+    quecital_toml_path = find_quecital_toml("quecital.toml")
 
     if quecital_toml_path:
+        quecital_data = tomllib.loads(quecital_toml_path.read_text(encoding="utf-8"))
         click.echo(
             f"""
                     Welcome to Quecital!
@@ -65,22 +63,22 @@ def start():
             case 1:
                 # Logic to start quiz
                 click.echo("Starting quiz...")
-                quiz.main()
+                quiz.main(quecital_data)
             case 2:
                 # Logic to add a question
                 click.echo("Adding a question...")
-                add_quiz_question.main()
+                add_quiz_question.main(quecital_toml_path, quecital_data)
             case 3:
                 # Logic to add a recital
                 click.echo("Adding a recital...")
-                add_recital.main()
+                add_recital.main(quecital_toml_path, quecital_data)
             case 4:
                 # Logic to start a recital
                 pass
             case 5:
                 # logic to add a topic to quecital.toml
                 click.echo("Adding a topic to quecital.toml")
-                add_new_topic(new_topic())
+                add_new_topic(new_topic(), quecital_toml_path)
             case 6:
                 click.echo("Exiting Quecital. Goodbye!")
             case _:
@@ -90,8 +88,8 @@ def start():
         click.echo("quecital.toml not found in the current working directory.")
         # Perform actions when quecital.toml is not found
         create_file = click.confirm(
-            "Do you want to create a new quiz file?", default=True
+            "Do you want to create a new quecital file?", default=True
         )
 
         if create_file:
-            create_quecital_file()
+            create_quecital_file("quecital.toml")

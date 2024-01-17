@@ -1,55 +1,20 @@
-"""
-add_questions.py
-
-This script allows users to add new questions to a TOML file containing
-trivia questions.
-
-The questions are organized by topics, and each question is represented
-as a dictionary.
-
-Usage:
-    - Run the script to add a new question to the specified topic in the
-        QUESTIONS.toml file.
-
-Dependencies:
-    - pathlib: For working with file paths.
-    - tomllib: For parsing and manipulating TOML data.
-    - tomli_w: For writing TOML data.
-    - quiz: Contains the main_loop function used for selecting the topic.
-
-Author:
-    [Your Name]
-"""
-
-import pathlib
-import tomllib
 from tomli_w import dump
 from quecital.quiz import main_loop
 
 
-def preprocess():
-    questions_path = pathlib.Path("quecital.toml")
-    trivia_toml = tomllib.loads(questions_path.read_text())
-    return questions_path, trivia_toml
 
-
-def main():
+def main(quecital_toml_path, quecital_data):
     """
-    Main function to add a new question to the specified topic in the
-        QUESTIONS.toml file.
+
 
     Steps:
-        1. Get the list of existing questions for the selected topic.
-        2. Create a new question dictionary.
-        3. Append the new question to the list of existing questions.
-        4. Update the QUESTIONS.toml file with the new data.
+        1.
     """
-    questions_path, trivia_toml = preprocess()
-    questions_list = path_to_list_of_dicts(trivia_toml)
+    questions_list = path_to_list_of_dicts(quecital_data)
     new_question_dict = create_question()
     questions_list.append(new_question_dict)
-    with open(questions_path, "wb") as f:
-        dump(trivia_toml, f)
+    with open(quecital_toml_path, "wb") as f:
+        dump(quecital_data, f)
 
 
 def path_to_list_of_dicts(trivia_toml):
@@ -92,7 +57,3 @@ def create_question():
         "hint": hint,
         "explanation": explanation,
     }
-
-
-if __name__ == "__main__":
-    main()
