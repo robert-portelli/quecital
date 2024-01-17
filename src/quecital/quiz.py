@@ -1,33 +1,20 @@
 # quiz.py
-"""
-A simple command-line quiz game.
-
-This script reads questions from a TOML file, allows the user to choose a topic,
-and quizzes the user with a set number of random questions from that topic.
-
-Requirements:
-- Python 3.7 or later
-- The `tomllib` library for TOML parsing
-
-Install `tomllib` with:
-$ pip install toml
-"""
 from string import ascii_lowercase
 import random
 import pathlib
 import tomllib
 
 NUM_QUESTIONS_PER_QUIZ = 5
-QUESTIONS_PATH = pathlib.Path("quecital.toml")
+# QUESTIONS_PATH = pathlib.Path("quecital.toml")
 # QUESTIONS_PATH = pathlib.Path(__file__).parent / "quecital.toml"
 
 
-def main():
+def main(quecital_data):
     """
     Main function to run the quiz game.
     """
     questions = preprocess(
-        QUESTIONS_PATH,
+        quecital_data,
         num_questions=NUM_QUESTIONS_PER_QUIZ
         )
 
@@ -39,7 +26,7 @@ def main():
     print(f"\nYou got {num_correct} correct out of {len(questions)} questions")
 
 
-def preprocess(path, num_questions):
+def preprocess(data, num_questions):
     """
     Preprocess questions by loading from the TOML file and selecting a topic.
 
@@ -50,9 +37,9 @@ def preprocess(path, num_questions):
     Returns:
     List[dict]: A list of selected questions.
     """
-    trivia_toml = tomllib.loads(path.read_text())
+    #trivia_toml = tomllib.loads(path.read_text())
     topics = {
-        topic["label"]: topic["questions"] for topic in trivia_toml.values()
+        topic["label"]: topic["questions"] for topic in data.values()
     }
     topic_label = main_loop(
         question="Which topic do you want to be quizzed about",

@@ -14,12 +14,6 @@ def quecital():
 
 
 def find_quecital_toml(quecital_storage):
-    """Read in the pyproject.toml and look up the value for
-    key 'quecital': a string path to the quecital.toml
-    1) does the key exist
-    2) is the value not none
-    3) if you split the string on ., is the second element 'toml'
-    """
     quecital_path = Path(quecital_storage)
     return quecital_path if quecital_path.is_file() else None
 
@@ -30,12 +24,11 @@ def new_topic():
     return {topic: {"label": label, "questions": [], "recitals": []}}
 
 
-def add_new_topic(topic):
-    questions_path = Path("quecital.toml")
-    trivia_toml = tomllib.loads(questions_path.read_text())
-    trivia_toml.update(topic)
-    with open(questions_path, "wb") as f:
-        dump(trivia_toml, f)
+def add_new_topic(topic, quecital_toml_path):
+    quecital_toml = tomllib.loads(quecital_toml_path.read_text(encoding="utf-8"))
+    quecital_toml.update(topic)
+    with open(quecital_toml_path, "wb") as f:
+        dump(quecital_toml, f)
 
 
 def create_quecital_file(file_name):
@@ -52,6 +45,7 @@ def start():
     quecital_toml_path = find_quecital_toml("quecital.toml")
 
     if quecital_toml_path:
+        quecital_data = tomllib.loads(quecital_toml_path.read_text(encoding="utf-8"))
         click.echo(
             f"""
                     Welcome to Quecital!
@@ -69,11 +63,11 @@ def start():
             case 1:
                 # Logic to start quiz
                 click.echo("Starting quiz...")
-                quiz.main()
+                quiz.main(quecital_data)
             case 2:
                 # Logic to add a question
                 click.echo("Adding a question...")
-                add_quiz_question.main()
+                add_quiz_question.main(quecital_toml_path, quecital_data)
             case 3:
                 # Logic to add a recital
                 click.echo("Adding a recital...")
@@ -84,7 +78,7 @@ def start():
             case 5:
                 # logic to add a topic to quecital.toml
                 click.echo("Adding a topic to quecital.toml")
-                add_new_topic(new_topic())
+                add_new_topic(new_topic(), quecital_toml_path)
             case 6:
                 click.echo("Exiting Quecital. Goodbye!")
             case _:
