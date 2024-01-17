@@ -1,5 +1,3 @@
-import pathlib
-import tomllib
 from tomli_w import dump
 from quecital.quiz import main_loop
 
@@ -59,7 +57,3 @@ def create_question():
         "hint": hint,
         "explanation": explanation,
     }
-
-
-if __name__ == "__main__":
-    main(quecital_toml_path, quecital_data)

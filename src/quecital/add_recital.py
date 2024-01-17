@@ -1,35 +1,22 @@
-"""
-add_rectials.py
+# add_recitals.py
 
-"""
 
-import pathlib
-import tomllib
 from tomli_w import dump
 from quecital.quiz import main_loop
 
-def preprocess():
-    questions_path = pathlib.Path("quecital.toml")
-    trivia_toml = tomllib.loads(questions_path.read_text())
-    return questions_path, trivia_toml
 
-def main():
+def main(quecital_toml_path, quecital_data):
     """
-    Main function to add a new question to the specified topic in the
-        QUESTIONS.toml file.
+
 
     Steps:
-        1. Get the list of existing questions for the selected topic.
-        2. Create a new question dictionary.
-        3. Append the new question to the list of existing questions.
-        4. Update the QUESTIONS.toml file with the new data.
+        1.
     """
-    questions_path, trivia_toml = preprocess()
-    questions_list = path_to_list_of_dicts(trivia_toml)
+    questions_list = path_to_list_of_dicts(quecital_data)
     new_question_dict = create_recital()
     questions_list.append(new_question_dict)
-    with open(questions_path, "wb") as f:
-        dump(trivia_toml, f)
+    with open(quecital_toml_path, "wb") as f:
+        dump(quecital_data, f)
 
 
 def path_to_list_of_dicts(trivia_toml):
@@ -42,7 +29,7 @@ def path_to_list_of_dicts(trivia_toml):
             a question.
     """
     topic_label = main_loop(
-        question="Which topic do you want to add a question to",
+        question="Which topic do you want to add a recital to",
         alternatives=trivia_toml.keys(),
     )[0]
     return trivia_toml[topic_label]["recitals"]
@@ -60,9 +47,9 @@ def create_recital():
             - 'hint': None,
             - 'explanation': None
     """
-    prompt = input("Enter your recital prompt: ")
+    prompt = input("Enter your prompt: ")
     recital = input("Enter your recital: ")
-    alternatives = input("Enter one alternative at a time: ")
+    alternatives = input("Enter one alternative at a time: ")  # TODO a string to be parsed
     hint = input("Offer a hint? -enter to skip")
     explanation = input("Offer an explanation? - enter to skip")
     return {
@@ -72,7 +59,3 @@ def create_recital():
         "hint": hint,
         "explanation": explanation,
     }
-
-
-if __name__ == "__main__":
-    main()

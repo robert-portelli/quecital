@@ -1,10 +1,10 @@
 # quecital.py
 
 from pathlib import Path
-import click
 import tomllib
-from quecital import quiz, add_quiz_question, add_recital
+import click
 from tomli_w import dump
+from quecital import quiz, add_quiz_question, add_recital
 
 
 @click.group()
@@ -71,7 +71,7 @@ def start():
             case 3:
                 # Logic to add a recital
                 click.echo("Adding a recital...")
-                add_recital.main()
+                add_recital.main(quecital_toml_path, quecital_data)
             case 4:
                 # Logic to start a recital
                 pass
@@ -88,7 +88,7 @@ def start():
         click.echo("quecital.toml not found in the current working directory.")
         # Perform actions when quecital.toml is not found
         create_file = click.confirm(
-            "Do you want to create a new quiz file?", default=True
+            "Do you want to create a new quecital file?", default=True
         )
 
         if create_file:
