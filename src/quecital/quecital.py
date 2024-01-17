@@ -99,8 +99,19 @@ def start():
                 pass
             case 5:
                 # logic to add a topic to quecital.toml
-                click.echo("Adding a topic to quecital.toml")
-                add_new_topic(new_topic(), quecital_toml_path)
+                try:
+                    while True:
+                        click.echo("Adding a topic...")
+                        add_new_topic(new_topic(), quecital_toml_path)
+                        user_wants_to_add = click.confirm(
+                            "Do you want to add another topic?", default=True
+                        )
+
+                        if not user_wants_to_add:
+                            break
+
+                except KeyboardInterrupt:
+                    click.echo("\nExiting the application.")
             case 6:
                 click.echo("Exiting Quecital. Goodbye!")
             case _:
