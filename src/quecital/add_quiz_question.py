@@ -1,15 +1,11 @@
+# add_quiz_question.py
+
 from tomli_w import dump
 from quecital.quiz import main_loop
 
 
 
 def main(quecital_toml_path, quecital_data):
-    """
-
-
-    Steps:
-        1.
-    """
     questions_list = path_to_list_of_dicts(quecital_data)
     new_question_dict = create_question()
     questions_list.append(new_question_dict)
@@ -31,6 +27,7 @@ def path_to_list_of_dicts(trivia_toml):
         alternatives=trivia_toml.keys(),
     )[0]
     return trivia_toml[topic_label]["questions"]
+#  TODO handle the key error if ["questions"] not in trivia_toml[topic_label]
 
 
 def create_question():

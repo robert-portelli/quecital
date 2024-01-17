@@ -66,12 +66,34 @@ def start():
                 quiz.main(quecital_data)
             case 2:
                 # Logic to add a question
-                click.echo("Adding a question...")
-                add_quiz_question.main(quecital_toml_path, quecital_data)
+                try:
+                    while True:
+                        click.echo("Adding a question...")
+                        add_quiz_question.main(quecital_toml_path, quecital_data)
+                        user_wants_to_add = click.confirm(
+                            "Do you want to add another question?", default=True
+                        )
+
+                        if not user_wants_to_add:
+                            break
+
+                except KeyboardInterrupt:
+                    click.echo("\nExiting the application.")
             case 3:
                 # Logic to add a recital
-                click.echo("Adding a recital...")
-                add_recital.main(quecital_toml_path, quecital_data)
+                try:
+                    while True:
+                        click.echo("Adding a recital...")
+                        add_recital.main(quecital_toml_path, quecital_data)
+                        user_wants_to_add = click.confirm(
+                            "Do you want to add another recital?", default=True
+                        )
+
+                        if not user_wants_to_add:
+                            break
+
+                except KeyboardInterrupt:
+                    click.echo("\nExiting the application.")
             case 4:
                 # Logic to start a recital
                 pass
