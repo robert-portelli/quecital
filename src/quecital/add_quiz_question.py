@@ -45,8 +45,8 @@ def create_question():
     question = input("Enter your question prompt: ")
     answers = input("Enter one correct answer at a time: ")
     alternatives = input("Enter one alternative at a time: ")
-    hint = input("Offer a hint? -enter to skip")
-    explanation = input("Offer an explanation? - enter to skip")
+    hint = input("Offer a hint? -enter to skip ")
+    explanation = input("Offer an explanation? - enter to skip ")
     return {
         "question": question,
         "answers": list([answers]),
