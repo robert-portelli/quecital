@@ -31,11 +31,12 @@ def get_multiline_edit(prompt):
         user_input = edited_content[marker_position + len(custom_marker):].strip()
 
         # Split the user input into lines
-        lines = user_input.split("\n")
-        return lines
+        #lines = user_input.split("\n")
+        # return lines
+        return user_input
     else:
         click.echo("No changes were made.")
-        return []
+        return ""
 
 
 if __name__ == "__main__":
