@@ -46,7 +46,7 @@ def create_question():
             - 'explanation': None
     """
 
-    multiline_text_editor = importlib.import_module('quecital/multiline_text_editor')
+    multiline_text_editor = importlib.import_module('quecital.multiline_text_editor')
     editor_multiline = getattr(multiline_text_editor, 'get_multiline_edit')
 
     question = editor_multiline("Enter your question prompt: ")
