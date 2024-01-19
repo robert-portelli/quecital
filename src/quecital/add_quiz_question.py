@@ -89,7 +89,3 @@ def alternative():
         if not add_another_alternative:
             break
     return alternatives
-
-
-if __name__ == "__main__":
-    main()
