@@ -45,18 +45,18 @@ def create_question():
             - 'hint': None,
             - 'explanation': None
     """
-    question = input("Enter your question prompt: ")
-
-    answers = click.prompt("Enter one correct answer at a time: ")
-
-    alternatives = click.edit("Enter one alternative at a time: ")
-
-    multiline_input = importlib.import_module('quecital/multiline_input')
-    cli_multiline = getattr(multiline_input, 'get_multiline_input')
-    hint = cli_multiline("Offer a hint? -enter to skip ")
 
     multiline_text_editor = importlib.import_module('quecital/multiline_text_editor')
     editor_multiline = getattr(multiline_text_editor, 'get_multiline_edit')
+
+    question = editor_multiline("Enter your question prompt: ")
+
+    answers = editor_multiline("Enter one correct answer at a time: ")
+
+    alternatives = editor_multiline("Enter one alternative at a time: ")
+
+    hint = editor_multiline("Offer a hint? -enter to skip ")
+
     explanation = editor_multiline("Offer an explanation? - enter to skip ")
     return {
         "question": question,
