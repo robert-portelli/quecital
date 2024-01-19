@@ -1,7 +1,8 @@
 # add_quiz_question.py
-
+import click
 from tomli_w import dump
-from quecital.quiz import main_loop
+#from quecital.quiz import main_loop
+import importlib
 
 
 
@@ -13,7 +14,7 @@ def main(quecital_toml_path, quecital_data):
         dump(quecital_data, f)
 
 
-def path_to_list_of_dicts(trivia_toml):
+def path_to_list_of_dicts(quecital_data):
     """
     Return the list of dictionaries representing questions for the
         selected topic.
@@ -22,12 +23,14 @@ def path_to_list_of_dicts(trivia_toml):
         List[Dict]: A list of dictionaries where each dictionary represents
             a question.
     """
+    quiz_module = importlib.import_module('quecital.quiz')
+    main_loop = getattr(quiz_module, 'main_loop')
     topic_label = main_loop(
         question="Which topic do you want to add a question to",
-        alternatives=trivia_toml.keys(),
+        alternatives=quecital_data.keys(),
     )[0]
-    return trivia_toml[topic_label]["questions"]
-#  TODO handle the key error if ["questions"] not in trivia_toml[topic_label]
+    return quecital_data[topic_label]["questions"]
+#  TODO handle the key error if ["questions"] not in quecital_data[topic_label]
 
 
 def create_question():
@@ -43,10 +46,18 @@ def create_question():
             - 'explanation': None
     """
     question = input("Enter your question prompt: ")
-    answers = input("Enter one correct answer at a time: ")
-    alternatives = input("Enter one alternative at a time: ")
-    hint = input("Offer a hint? -enter to skip ")
-    explanation = input("Offer an explanation? - enter to skip ")
+
+    answers = click.prompt("Enter one correct answer at a time: ")
+
+    alternatives = click.edit("Enter one alternative at a time: ")
+
+    multiline_input = importlib.import_module('quecital/multiline_input')
+    cli_multiline = getattr(multiline_input, 'get_multiline_input')
+    hint = cli_multiline("Offer a hint? -enter to skip ")
+
+    multiline_text_editor = importlib.import_module('quecital/multiline_text_editor')
+    editor_multiline = getattr(multiline_text_editor, 'get_multiline_edit')
+    explanation = editor_multiline("Offer an explanation? - enter to skip ")
     return {
         "question": question,
         "answers": list([answers]),

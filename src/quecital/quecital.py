@@ -45,7 +45,6 @@ def start():
     quecital_toml_path = find_quecital_toml("quecital.toml")
 
     if quecital_toml_path:
-        quecital_data = tomllib.loads(quecital_toml_path.read_text(encoding="utf-8"))
         click.echo(
             f"""
                     Welcome to Quecital!
@@ -53,6 +52,7 @@ def start():
                     What would you like to do?
             """
         )
+        quecital_data = tomllib.loads(quecital_toml_path.read_text(encoding="utf-8"))
         # Perform actions based on the existence of quecital.toml
         action = click.prompt(
             "1. Take a quiz\n2. Add a question\n3. Add a recital\n4. Start a recital\n5. Add a topic\n6. Exit",
