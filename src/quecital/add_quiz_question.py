@@ -33,18 +33,6 @@ def path_to_list_of_dicts(quecital_data):
 
 
 def form_toml_entry():
-    """
-    Create a dictionary representing a new trivia question.
-
-    Returns:
-        Dict: A dictionary with the following items:
-            - 'question': str,
-            - 'answers': List,
-            - 'alternatives': List,
-            - 'hint': None,
-            - 'explanation': None
-    """
-
     question = get_multiline_edit("Enter your question prompt: ")
 
     answers = answer()
@@ -57,7 +45,6 @@ def form_toml_entry():
 
     return {
         "question": question,
-        # "answers": list([answers]),
         "answers": list(answers),
         "alternatives": list(alternatives),
         "hint": hint,
@@ -67,7 +54,7 @@ def form_toml_entry():
 
 def answer():
     prompt = "Enter a correct answer: "
-    answers = []
+    answers = []  # to support questions with more than one required answer
     while True:
         answers.append(get_multiline_edit(prompt))
         add_another_answer = click.confirm(
