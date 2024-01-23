@@ -2,15 +2,41 @@ import click
 from pathlib import Path
 import tomllib
 import random
+from quecital.multiline_text_editor import get_multiline_edit
 
 
 def main(data):
     assets = preprocess(data)
-    attempt = "Not yet implemented. Coming never"
-    display = f"\nThe answer is:\n{assets['answers']}\n\nYour attempt was:\n{attempt}"
+    attempt = get_attempt(assets)
+    display = f"\
+        \nThe prompt was:\
+        \n{assets['question']}\n\
+        \nThe attempt was:\
+        \n{attempt}\n\
+        \nThe correct answer is:\
+        \n{assets['answers']}\n"
     if "explanation" in assets and assets["explanation"]:
-        display += f"\n{assets['explanation']}"
+        display += f"\n\nExplanation: {assets['explanation']}"
     click.echo(display)
+
+def compose_prompt(assets, show_hint=False):
+    hint = "Hint not provided"
+    if "hint" in assets and assets["hint"] and show_hint is False:
+        hint = "<DELETE FOR HINT>"
+    if "hint" in assets and assets["hint"] and show_hint is True:
+        hint = assets['hint']
+    prompt = f'The prompt is:\n\n{assets["question"]}\n\n{hint}'
+    return prompt
+
+
+def get_attempt(assets):
+    prompt = compose_prompt(assets)
+    attempt = get_multiline_edit(prompt)
+    if attempt == 'show_hint':
+        prompt = compose_prompt(assets, show_hint=True)
+        attempt = get_multiline_edit(prompt)
+
+    return attempt
 
 
 def preprocess(quecital_data):
