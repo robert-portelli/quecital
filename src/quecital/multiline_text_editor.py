@@ -1,7 +1,7 @@
 import click
 
 
-def get_multiline_edit(prompt, recital=False, hint=None):
+def get_multiline_edit(prompt):
     """
     Capture multiline input from the user using an interactive editor.
 
@@ -15,14 +15,16 @@ def get_multiline_edit(prompt, recital=False, hint=None):
         List[str]: A list of strings representing the multiline input.
     """
 
-    hint_marker = "<DELETE FOR HINT>"
+    #hint_marker = "<DELETE FOR HINT>"
     # Custom marker to separate prompt text from user's input
     custom_marker = "# ---- Your Input Below ----\n"
 
-    if hint:
-        prompt = prompt + '\n' + hint_marker
+    #if hint:
+    #    prompt = prompt + '\n' + hint_marker
 
     default_content = f"{prompt}\n\n{custom_marker}"
+    hide_hint = '<DELETE FOR HINT>'
+    no_hint = 'Hint not provided'
 
     edited_content = click.edit(
         text=default_content,
@@ -31,10 +33,9 @@ def get_multiline_edit(prompt, recital=False, hint=None):
     # keep_open=False,  # Close the editor immediately after the user exits
 
     # check if the user wants to see the hint
-    if edited_content:
-        hide_hint = edited_content.find(hint_marker)
-        if not hide_hint:
-            return 'show_hint'
+    if edited_content and hide_hint and no_hint not in edited_content:
+        return 'show_hint'
+
 
     # check if the user submitted an attempt
     if edited_content:
