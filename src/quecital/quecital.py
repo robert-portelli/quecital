@@ -4,7 +4,7 @@ from pathlib import Path
 import tomllib
 import click
 from tomli_w import dump
-from quecital import quiz, add_quiz_question, add_recital
+from quecital import quiz, recital, add_quiz_question, add_recital
 
 
 @click.group()
@@ -96,7 +96,8 @@ def start():
                     click.echo("\nExiting the application.")
             case 4:
                 # Logic to start a recital
-                pass
+                click.echo("Starting recital")
+                recital.main(quecital_data)
             case 5:
                 # logic to add a topic to quecital.toml
                 try:
