@@ -16,7 +16,7 @@ def main(data):
 def preprocess(quecital_data):
     topics = list(quecital_data.keys())
     topic_label = click.prompt(
-        "From which topic will you perform a random recital",
+        "From which topic will you perform a random recital\n\n",
         type=click.Choice(topics),
         show_choices=True,
     )
