@@ -33,13 +33,14 @@ def path_to_list_of_dicts(quecital_data):
 
 
 def form_toml_entry():
-    prompt = get_multiline_edit("Enter your prompt: ")
-    recital = get_multiline_edit("Enter your recital: ")
+    question = get_multiline_edit("Enter your prompt: ")
+    answers = get_multiline_edit("Enter your recital: ")
     hint = get_multiline_edit("Offer a hint? -enter to skip")
     explanation = get_multiline_edit("Offer an explanation? - enter to skip")
     return {
-        "prompt": prompt,  # the "question"
-        "recital": recital,  # the "answer"
+        "question": question,
+        "answers": answers,
+        #"alternatives": list(alternatives),
         "hint": hint,
         "explanation": explanation,
     }
