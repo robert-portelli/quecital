@@ -15,12 +15,15 @@ def main(data):
 
 def preprocess(quecital_data):
     topics = list(quecital_data.keys())
-    topic_label = click.prompt(
-        "From which topic will you perform a random recital\n\n",
-        type=click.Choice(topics),
-        show_choices=True,
-    )
-    return random.choice(quecital_data[topic_label]["recitals"])
+    prompt = "\nFrom which topic will you perform a random recital\n\n"
+    for index, topic in enumerate(topics, start=1):
+        prompt += f"\n{index}: {topic}"
+    prompt += '\n\nEnter one of the following ->'
+    valid_choices = list(map(str, range(1, len(topics) + 1)))
+    selected_index = click.prompt(prompt, type=click.Choice(valid_choices))
+    topic = topics[int(selected_index) - 1]
+    return random.choice(quecital_data[topic]["recitals"])
+
 
 if __name__ == '__main__':
     quecital_path = Path("quecital.toml")
