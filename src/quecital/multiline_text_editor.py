@@ -1,49 +1,68 @@
 import click
+from prompt_toolkit import prompt
+from prompt_toolkit.keys import Keys
+from prompt_toolkit.key_binding import KeyBindings
+from prompt_toolkit.history import InMemoryHistory
+from prompt_toolkit.styles import Style
 
 
-def get_multiline_edit(prompt):
-    """
-    Capture multiline input from the user using an interactive editor.
+# Constants
+INPUT_BELOW_MARKER = "# ---- Your Input Below ----\n"
 
-    The function opens an interactive editor (specified by the user or the default)
-    for multiline input. The user can edit the content and save the changes.
 
-    Args:
-        prompt (str): The prompt to display to the user.
+def get_default_content(garnish):
+    header = f"{garnish}\n\n{INPUT_BELOW_MARKER}"
+    return header
 
-    Returns:
-        List[str]: A list of strings representing the multiline input.
-    """
-    # Custom marker to separate prompt text from user's input
-    custom_marker = "# ---- Your Input Below ----\n"
 
-    default_content = f"{prompt}\n\n{custom_marker}"
+def extract_user_input(user_input):
+    below_marker_position = user_input.find(INPUT_BELOW_MARKER)
 
-    edited_content = click.edit(
-        text=default_content,
-        editor=None,
-    )  # Let Click choose the default editor
-    # keep_open=False,  # Close the editor immediately after the user exits
-
-    if edited_content:
-        # Find the position of the custom marker and extract user's input
-        marker_position = edited_content.find(custom_marker)
-        user_input = edited_content[marker_position + len(custom_marker):].strip()
-
-        # Split the user input into lines
-        #lines = user_input.split("\n")
-        # return lines
-        return user_input
+    if below_marker_position != -1:
+        return user_input[below_marker_position + len(INPUT_BELOW_MARKER) :].strip()
     else:
         click.echo("No changes were made.")
         return ""
 
 
+def bottom_toolbar():
+    # use a list of style/text tuples
+    return [
+        ("class:bottom-toolbar-translucent", ""),
+        ("class:bottom-toolbar-opaque", "\n Ctrl+C to quit, alt+enter to proceed "),
+    ]
+
+
+def get_multiline_edit(garnish):
+    default_content = get_default_content(garnish)
+
+    history = InMemoryHistory()
+
+    style = Style.from_dict(
+        {
+            "bottom-toolbar-translucent": "#ffffff bg:#444400",
+            "bottom-toolbar-opaque": "#ffffff bg:#333333",
+        }
+    )
+    try:
+        user_input = prompt(
+            default=default_content,
+            multiline=True,
+            history=history,
+            bottom_toolbar=bottom_toolbar,
+            style=style,
+        )
+    except (EOFError, KeyboardInterrupt):
+        user_input = ""
+
+    return extract_user_input(user_input)
+
+
 if __name__ == "__main__":
-    # Example of using get_multiline_edit()
     code_input = get_multiline_edit("Enter your code:")
 
     if code_input:
         click.echo("\nYou entered:")
-        for line in code_input:
-            click.echo(line)
+        click.echo(code_input)
+    else:
+        click.echo("\nNo input received.")

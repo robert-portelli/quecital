@@ -1,0 +1,42 @@
+[plants]
+label = "Plants"
+
+[[plants.questions]]
+question = "What plant are you excited to grow this year?"
+answers = [
+    "Lisianthus",
+]
+alternatives = [
+    "Cammomile",
+    "Claytonia",
+]
+hint = "A fantastic cut flower."
+explanation = ""
+
+[[plants.recitals]]
+question = "assign a list of strings to the symbol tulip_list"
+answers = "tulip_list = [\"Red Tulip\", \"Yellow Tulip\", \"White Tulip\"]"
+hint = ""
+explanation = ""
+
+[[plants.recitals]]
+question = "Assign a tuple of roses to the symbol rose_tuple"
+answers = "rose_tuple = (\"Red Rose\", \"White Rose\", \"Pink Rose\")"
+hint = "Red, white, and pink"
+explanation = ""
+
+[[plants.recitals]]
+question = "This is a question string."
+answers = "This is the answer"
+hint = ""
+explanation = "Testing it out"
+
+[satellites]
+label = "Satellites"
+questions = []
+
+[[satellites.recitals]]
+question = "Assign a string of characters representing the material of which earth's only satellite is made."
+answers = "moon = 'cheese'"
+hint = "cow noise + 'n' = a dairy product"
+explanation = "A cow jumped over it."
