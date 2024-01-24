@@ -14,14 +14,8 @@ def get_multiline_edit(prompt, hint_shown=False):
     Returns:
         List[str]: A list of strings representing the multiline input.
     """
-
-    #hint_marker = "<DELETE FOR HINT>"
     # Custom marker to separate prompt text from user's input
     custom_marker = "# ---- Your Input Below ----\n"
-
-    #if hint:
-    #    prompt = prompt + '\n' + hint_marker
-
     default_content = f"{prompt}\n\n{custom_marker}"
     hide_hint = '<DELETE FOR HINT>'
     no_hint = 'Hint not provided'
