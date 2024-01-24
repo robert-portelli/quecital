@@ -7,7 +7,7 @@ import click
 from pathlib import Path
 import tomllib
 import random
-from quecital.multiline_text_editor import get_multiline_edit
+from quecital.multiline_recital_editor import get_multiline_edit
 
 
 def main(data):
