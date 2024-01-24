@@ -34,7 +34,7 @@ def get_attempt(assets):
     attempt = get_multiline_edit(prompt)
     if attempt == 'show_hint':
         prompt = compose_prompt(assets, show_hint=True)
-        attempt = get_multiline_edit(prompt)
+        attempt = get_multiline_edit(prompt, hint_shown=True)
 
     return attempt
 
