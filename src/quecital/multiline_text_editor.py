@@ -1,7 +1,7 @@
 import click
 
 
-def get_multiline_edit(prompt):
+def get_multiline_edit(prompt, hint_shown=False):
     """
     Capture multiline input from the user using an interactive editor.
 
@@ -32,18 +32,26 @@ def get_multiline_edit(prompt):
     )  # Let Click choose the default editor
     # keep_open=False,  # Close the editor immediately after the user exits
 
-    # check if the user wants to see the hint
-    if edited_content and hide_hint and no_hint not in edited_content:
-        return 'show_hint'
-
-
-    # check if the user submitted an attempt
-    if edited_content:
+    # an attempt after viewing the hint
+    if edited_content and hint_shown is True:
         # Find the position of the custom marker and extract user's input
         marker_position = edited_content.find(custom_marker)
         user_input = edited_content[marker_position + len(custom_marker):].strip()
-
         return user_input
+
+    # check if the user wants to see the hint
+    if edited_content and hint_shown is False:
+        if hide_hint not in edited_content and no_hint not in edited_content:
+            return 'show_hint'
+    # an attempt without viewing the hint
+    if edited_content and hint_shown is False:
+        if hide_hint in edited_content or no_hint in edited_content:
+            # Find the position of the custom marker and extract user's input
+            marker_position = edited_content.find(custom_marker)
+            user_input = edited_content[marker_position + len(custom_marker):].strip()
+
+            return user_input
+
     else:
         click.echo("No changes were made.")
         return ""
