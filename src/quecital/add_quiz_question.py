@@ -56,8 +56,17 @@ def form_toml_entry() -> dict:
 
 
 def answer() -> List:
+    """Support the user submitting a prompt with
+    multiple correct answers as one correct answer per line or
+    one correct multiline answer.
+
+    Multiple sequential prompts can be submitted.
+
+    The functionality for one correct answer per line is available
+    via ptk keybinding in multiline_text_editor.get_multiline_edit()
+    """
     garnish = "Enter a correct answer: "
-    answers = []  # to support questions with more than one required answer
+    answers = []
     while True:
         user_input = get_multiline_edit(garnish)
         match user_input:
