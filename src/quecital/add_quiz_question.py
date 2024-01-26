@@ -49,7 +49,7 @@ def form_toml_entry() -> dict:
     return {
         "question": question,
         "answers": answers,
-        "alternatives": list(alternatives),
+        "alternatives": alternatives,
         "hint": hint,
         "explanation": explanation,
     }
@@ -90,10 +90,18 @@ def alternative() -> List:
     garnish = "Enter an alternative, i.e., an incorrect answer"
     alternatives = []
     while True:
-        alternatives.append(get_multiline_edit(garnish))
-        add_another_alternative = click.confirm(
+        user_input = get_multiline_edit(garnish)
+        match user_input:
+            case str(user_input):
+                alternatives.append(user_input)
+            case list(user_input):
+                alternatives.extend(user_input)
+            case _:
+                raise TypeError("Unsupported datatype entered for answer.")
+
+        add_another_of_the_same = click.confirm(
             "Add another alternative?", default=True
         )
-        if not add_another_alternative:
+        if not add_another_of_the_same:
             break
     return alternatives
