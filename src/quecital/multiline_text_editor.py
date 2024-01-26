@@ -1,6 +1,6 @@
+from typing import Union, List
 import click
 from prompt_toolkit import prompt
-from prompt_toolkit.keys import Keys
 from prompt_toolkit.key_binding import KeyBindings
 from prompt_toolkit.history import InMemoryHistory
 from prompt_toolkit.styles import Style
@@ -8,6 +8,7 @@ from prompt_toolkit.styles import Style
 
 # Constants
 INPUT_BELOW_MARKER = "# ---- Your Input Below ----\n"
+MULTI_FLAG = "MULTI_FLAG"
 
 
 def get_default_content(garnish):
@@ -15,14 +16,24 @@ def get_default_content(garnish):
     return header
 
 
-def extract_user_input(user_input):
+def extract_user_input(user_input: str, multi_flag=False) -> str | List[str]:
     below_marker_position = user_input.find(INPUT_BELOW_MARKER)
 
-    if below_marker_position != -1:
+    # user_input is one multiline asset from one window
+    # return a string
+    if multi_flag is False and below_marker_position != -1:
         return user_input[below_marker_position + len(INPUT_BELOW_MARKER) :].strip()
-    else:
-        click.echo("No changes were made.")
-        return ""
+
+    # user_input are multiple single line assets from one window
+    # return a list of strings
+    if multi_flag is True and below_marker_position != -1:
+        user_input = user_input[
+            below_marker_position + len(INPUT_BELOW_MARKER) :
+        ].strip()
+        return user_input.split("\n")
+
+    click.echo("No changes were made.")
+    return ""
 
 
 def bottom_toolbar():
@@ -30,10 +41,15 @@ def bottom_toolbar():
     return [
         ("class:bottom-toolbar-translucent", ""),
         ("class:bottom-toolbar-opaque", "\n Ctrl+C to quit, alt+enter to proceed "),
+        ("class:bottom-toolbar-opaque", "F2 to save one as one asset entry per line"),
     ]
 
 
-def get_multiline_edit(garnish):
+def inject_multi_flag(prompt_output):
+    return MULTI_FLAG + prompt_output
+
+
+def get_multiline_edit(garnish: str) -> str | List[str]:
     default_content = get_default_content(garnish)
 
     history = InMemoryHistory()
@@ -44,17 +60,26 @@ def get_multiline_edit(garnish):
             "bottom-toolbar-opaque": "#ffffff bg:#333333",
         }
     )
+    kb = KeyBindings()
+
+    @kb.add("f2")
+    def _(event):
+        event.app.exit(inject_multi_flag(event.app.current_buffer.text))
+
     try:
-        user_input = prompt(
+        user_input: str = prompt(
             default=default_content,
             multiline=True,
             history=history,
             bottom_toolbar=bottom_toolbar,
             style=style,
+            key_bindings=kb,
         )
     except (EOFError, KeyboardInterrupt):
         user_input = ""
 
+    if MULTI_FLAG in user_input:
+        return extract_user_input(user_input, multi_flag=True)
     return extract_user_input(user_input)
 
 
