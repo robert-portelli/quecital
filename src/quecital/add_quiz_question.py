@@ -7,14 +7,14 @@ from quecital.multiline_text_editor import get_multiline_edit
 
 
 def main(quecital_toml_path, quecital_data):
-    topic_question_assets = path_to_list_of_dicts(quecital_data)
-    new_quiz_asset: dict = form_toml_entry()
-    topic_question_assets.append(new_quiz_asset)
+    topic_question_assets = one_topics_questions(quecital_data)
+    new_question_asset: dict = form_toml_entry()
+    topic_question_assets.append(new_question_asset)
     with open(quecital_toml_path, "wb") as f:
         dump(quecital_data, f)
 
 
-def path_to_list_of_dicts(quecital_data):
+def one_topics_questions(quecital_data):
     """
     Return the list of dictionaries representing questions for the
         selected topic.
@@ -34,17 +34,15 @@ def path_to_list_of_dicts(quecital_data):
 
 
 def form_toml_entry() -> dict:
-    question: str = get_multiline_edit("Enter your question prompt: ")
+    question: str = rigid_receiver('question')
 
     answers: List[str] = answer()
 
     alternatives: List[str] = alternative()
 
-    hint: Optional[str] = get_multiline_edit("Offer a hint? -enter to skip ")
+    hint: Optional[str] = rigid_receiver('hint')
 
-    explanation: Optional[str] = get_multiline_edit(
-        "Offer an explanation? - enter to skip "
-    )
+    explanation: Optional[str] = rigid_receiver('explanation')
 
     return {
         "question": question,
@@ -54,6 +52,26 @@ def form_toml_entry() -> dict:
         "explanation": explanation,
     }
 
+def rigid_receiver(config: str) -> str:
+
+    configs = {
+        'question': {
+            'garnish': 'Enter a question prompt',
+        },
+        'hint': {
+            'garnish': 'Offer a hint? - enter to skip',
+        },
+        'explanation': {
+            'garnish': 'Offer an explanation? - enter to skip',
+        },
+    }
+
+    if config in configs:
+        user_input = get_multiline_edit(configs[config]['garnish'])
+        if isinstance(user_input, str):
+            return str(user_input)
+        raise TypeError("User input is not a string")
+    raise KeyError("config not in configs")
 
 def answer() -> List:
     """Support the user submitting a prompt with
