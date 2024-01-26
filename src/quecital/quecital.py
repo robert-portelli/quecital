@@ -4,7 +4,7 @@ from pathlib import Path
 import tomllib
 import click
 from tomli_w import dump
-from quecital import quiz, recital, add_quiz_question, add_recital
+from quecital import quiz, recital, quiz_management, add_recital
 
 
 @click.group()
@@ -69,7 +69,7 @@ def start():
                 try:
                     while True:
                         click.echo("Adding a question...")
-                        add_quiz_question.main(quecital_toml_path, quecital_data)
+                        quiz_management.main(quecital_toml_path, quecital_data)
                         user_wants_to_add = click.confirm(
                             "Do you want to add another question?", default=True
                         )
